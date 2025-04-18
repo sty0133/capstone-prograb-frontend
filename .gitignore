@@ -1,0 +1,11 @@
+.DS_Store
+/node_modules
+.history
+.ionide
+.env
+.vscode
+docs/_book
+node_modules/
+dist/
+npm-debug.log
+yarn-error.log
