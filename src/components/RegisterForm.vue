@@ -38,6 +38,7 @@
 
 <script>
 import axios from 'axios'
+import LoginForm from './LoginForm.vue'
 
 export default {
   name: 'RegisterForm',
@@ -104,7 +105,7 @@ export default {
 
         if (res.data.status === 'success') {
           alert(`회원가입 성공! \n${res.data.data}님 환영합니다!`)
-          this.$router.push('/login') // 회원가입 성공 후 로그인 페이지로 이동
+          this.$router.push('/') // 회원가입 성공 후 로그인 페이지로 이동
         }
       } catch (error) {
         if (error.response) {

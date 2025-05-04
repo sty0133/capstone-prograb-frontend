@@ -1,4 +1,3 @@
-<!-- src/components/LoginForm.vue -->
 <template>
   <div class="login-form">
     <h2>로그인</h2>
@@ -15,16 +14,17 @@
       @keyup.enter="handleLogin" 
     />
     <button @click="handleLogin">로그인</button>
+    <button class="register-button" @click="goToRegister">회원가입</button>
 
-    <div class="options">
-      <p>계정이 없으신가요?<a href="/register">회원가입</a></p>
-      <p><a href="/">비회원으로 시작하기</a></p>
+    <div class="guest-option">
+      <a href="/">비회원으로 시작하기</a>
     </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import { useUserStore } from '@/stores/user'
 
 export default {
   name: 'LoginForm',
@@ -57,14 +57,18 @@ export default {
 
         if (res.data.status === 'success') {
           this.successMessage = res.data.message
-            this.$emit('loginSuccess', res.data) // 부모 컴포넌트에 로그인 성공 이벤트 전달
-          alert(`로그인 성공`) // 성공 시 alert 표시 디버깅
+          const userStore = useUserStore()
+          userStore.setToken(res.data.token)
+          this.$router.push('/')
+          return
         }
       } catch (error) {
         if (error.response) {
           const status = error.response.status
-          if (status === 404 || status === 401) {
+          if (status === 404) {
             this.errorMessage = '아이디 또는 비밀번호가 잘못되었습니다.'
+          } else if (status === 401) {
+            this.errorMessage = '서버 오류가 발생했습니다.'
           } else if (status === 500) {
             this.errorMessage = '서버 오류가 발생했습니다.'
           } else {
@@ -80,6 +84,9 @@ export default {
     resetInputs() {
       this.user_id = ''
       this.user_password = ''
+    },
+    goToRegister() {
+      this.$router.push('/register') // 회원가입 페이지로 이동
     }
   }
 }
@@ -95,7 +102,7 @@ export default {
 }
 .login-form h2 {
   text-align: center;
-  margin-bottom: 50px;
+  margin-bottom: 40px;
 }
 input {
   padding: 10px;
@@ -110,16 +117,20 @@ button {
   border-radius: 5px;
   cursor: pointer;
 }
-.options {
-  margin-top: 30px;
-  font-size: 12px;
+button:hover {
+  background: gray;
 }
-.options a {
+.guest-option {
+  margin-top: 20px;
+  text-align: center; /* 중앙 정렬 */
+}
+.guest-option a {
   text-decoration: none;
-  color: black;
-  cursor: pointer;
-}
-.options a:hover {
   color: gray;
+  cursor: pointer;
+  font-size: small;
+}
+.guest-option a:hover {
+  color: black;
 }
 </style>
