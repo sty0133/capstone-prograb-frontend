@@ -66,9 +66,9 @@ export default {
         if (error.response) {
           const status = error.response.status
           if (status === 404) {
-            this.errorMessage = '아이디 또는 비밀번호가 잘못되었습니다.'
+            this.errorMessage = '존재하지 않는 아이디거나 비밀번호가 잘못되었습니다.'
           } else if (status === 401) {
-            this.errorMessage = '서버 오류가 발생했습니다.'
+            this.errorMessage = '아이디 또는 비밀번호가 잘못되었습니다.'
           } else if (status === 500) {
             this.errorMessage = '서버 오류가 발생했습니다.'
           } else {
