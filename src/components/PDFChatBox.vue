@@ -9,8 +9,8 @@
         v-for="(message, index) in messages"
         :key="index"
         :class="['message', message.type]"
+        v-html="message.text"
       >
-        {{ message.text }}
       </div>
     </div>
     <div class="input-area">
